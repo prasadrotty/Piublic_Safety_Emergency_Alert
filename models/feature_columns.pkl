@@ -1,0 +1,20 @@
+import pandas as pd
+import joblib
+
+# Load dataset
+df = pd.read_csv("data/Emergency_Alert_Dataset.csv")
+
+# Remove target and ID columns
+X = df.drop(columns=["target_label", "alert_id"], errors="ignore")
+
+# Convert categorical columns to dummy variables
+X = pd.get_dummies(X, drop_first=True)
+
+# Get feature column names
+feature_columns = X.columns.tolist()
+
+# Save feature columns
+joblib.dump(feature_columns, "models/feature_columns.pkl")
+
+print("feature_columns.pkl created successfully")
+print(f"Total Features: {len(feature_columns)}")
