@@ -11,7 +11,7 @@ def load_data():
     try:
 
         df = pd.read_csv(
-            "data/Emergency_Alert_Dataset.csv"
+            "Emergency_Alert_Dataset.csv"
         )
 
         return df
