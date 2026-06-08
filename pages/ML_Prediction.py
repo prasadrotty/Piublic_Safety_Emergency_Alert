@@ -16,16 +16,22 @@ st.set_page_config(
 # ==========================================
 # LOAD MODEL FILES
 # ==========================================
-@st.cache_resource # or whatever cache decorator you are using
+st.cache_resource  # or @st.cache_data depending on your code
 def load_artifacts():
-    model = joblib.load("models/model.pkl")
-    # Define it here or load it from a JSON/TXT file if you saved it
-    feature_columns = ["col1", "col2", "col3"] 
-    return model, feature_columns
-
-# When you call it at the top level of your script:
-model, feature_columns = load_artifacts()
-
+    try:
+        # Try to load the model normally
+        model = joblib.load("models/model.pkl")
+        
+        # Define your feature columns list here so it doesn't cause errors
+        feature_columns = ["put", "your", "actual", "column", "names", "here"] 
+        
+        return model, feature_columns
+        
+    except ModuleNotFoundError as e:
+        # 🚨 THIS WILL BYPASS STREAMLIT'S REDACTION AND SHOW YOU THE MISSING PACKAGE NAME!
+        st.error(f"⚠️ Model Loading Failed! Missing package: {e}")
+        st.info("Add the missing package named above to your requirements.txt file.")
+        st.stop()
 # ==========================================
 # TITLE
 # ==========================================
