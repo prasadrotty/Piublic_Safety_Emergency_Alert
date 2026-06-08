@@ -1,3 +1,10 @@
+import sys
+import pandas as pd
+
+# This tricks the unpickler into redirecting the typo to the real pandas library
+sys.modules['mport pandas as pd'] = pd
+
+# ... your existing imports like import streamlit as st, import joblib etc.
 import streamlit as st
 import pandas as pd
 import numpy as np
