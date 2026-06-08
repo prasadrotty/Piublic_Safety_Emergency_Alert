@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 st.set_page_config(
-    page_title="Emergency Alert Intelligence Platform",
+    page_title=" welcome to prasad Emergency Alert Intelligence Platform",
     page_icon="🚨",
     layout="wide"
 )
