@@ -16,22 +16,27 @@ st.set_page_config(
 # ==========================================
 # LOAD MODEL FILES
 # ==========================================
-st.cache_resource  # or @st.cache_data depending on your code
+@st.cache_resource
 def load_artifacts():
     try:
-        # Try to load the model normally
         model = joblib.load("models/model.pkl")
-        
-        # Define your feature columns list here so it doesn't cause errors
-        feature_columns = ["put", "your", "actual", "column", "names", "here"] 
-        
+        # 1. Put your actual training feature column names inside this list!
+        feature_columns = ["age", "severity", "location"] 
         return model, feature_columns
-        
     except ModuleNotFoundError as e:
-        # 🚨 THIS WILL BYPASS STREAMLIT'S REDACTION AND SHOW YOU THE MISSING PACKAGE NAME!
-        st.error(f"⚠️ Model Loading Failed! Missing package: {e}")
-        st.info("Add the missing package named above to your requirements.txt file.")
-        st.stop()
+        # This forces Streamlit to show us the exact missing package name on screen
+        st.error(f"❌ CRITICAL: Your model needs a missing package to load! Python says: {e}")
+        st.info("👉 Read the package name above, add it to your requirements.txt, and push to GitHub.")
+        # 2. Provide a fake fallback so 'feature_columns' is defined and doesn't crash the UI
+        return None, []
+
+# --- Call the function safely ---
+model, feature_columns = load_artifacts()
+
+# If the model failed to load because of the missing module, stop the app here gracefully
+if model is None:
+    st.warning("App paused until the missing package listed above is added to requirements.txt.")
+    st.stop()
 # ==========================================
 # TITLE
 # ==========================================
