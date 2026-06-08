@@ -1,10 +1,10 @@
-streamlit==1.46.1
-pandas==2.2.3
-numpy==2.2.6
-plotly==6.1.2
+streamlit
+pandas<2
+numpy
+plotly
 scikit-learn
 xgboost
-joblib==1.5.1
+joblib
 seaborn
 matplotlib
 networkx
