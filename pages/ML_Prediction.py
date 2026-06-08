@@ -1,8 +1,15 @@
 import sys
+import types
 import pandas as pd
 
-# This tricks the unpickler into redirecting the typo to the real pandas library
-sys.modules['mport pandas as pd'] = pd
+# Create a fake system module dynamically to absorb the typo
+fake_module = types.ModuleType('mport pandas as pd')
+fake_module.__dict__.update(pd.__dict__)
+sys.modules['mport pandas as pd'] = fake_module
+
+# Now your regular imports can continue below...
+import streamlit as st
+import joblib
 
 # ... your existing imports like import streamlit as st, import joblib etc.
 import streamlit as st
