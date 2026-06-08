@@ -16,35 +16,17 @@ st.set_page_config(
 # ==========================================
 # LOAD MODEL FILES
 # ==========================================
-
-@st.cache_resource
+@st.cache_resource # or whatever cache decorator you are using
 def load_artifacts():
-
-    model = joblib.load("models/model.pkl")
-
-    scaler = joblib.load("models/scaler.pkl")
-
-    label_encoder = joblib.load(
-        "models/label_encoder.pkl"
-    )
-
-    feature_columns = joblib.load(
-        "models/feature_columns.pkl"
-    )
-
-    return (
-        model,
-        scaler,
-        label_encoder,
-        feature_columns
-    )
-
-(
-    model,
-    scaler,
-    label_encoder,
-    feature_columns
-) = load_artifacts()
+    try:
+        model = joblib.load("models/model.pkl")
+        return model
+    except ModuleNotFoundError as e:
+        # This bypasses Streamlit's redactor and prints the exact missing package to your dashboard screen!
+        st.error(f"❌ The model is missing a dependency! Python says: {e}")
+        # This will print it clearly in your "Manage App" terminal logs too
+        print(f"🚨 CRITICAL MISSING MODULE: {e}")
+        st.stop()
 
 # ==========================================
 # TITLE
